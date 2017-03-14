@@ -4,9 +4,11 @@
 @import "{{ site.theme }}";
 
 table {
-  tr {
-    td {
-      vertical-align: top;
+  tbody {
+    tr {
+      td {
+        vertical-align: top;
+      }
     }
   }
 }
