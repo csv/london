@@ -35,3 +35,5 @@
     </tr>
   </tbody>
 </table>
+
+<a href="https://groups.google.com/forum/#!forum/csv-soundsystem-london">Sign up to the email list here</a>
