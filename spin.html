@@ -20,7 +20,7 @@ section {
 }
 
 h1 {
-  font-size: 24vmin;
+  font-size: 14vw;
   margin: 0;
 }
 
@@ -29,11 +29,12 @@ h1 {
 }
 </style>
 <canvas id="canvas-front"></canvas>
-<section>
+<section id="section">
 <div class="container">
   <h1>csv.london</h1>
   <p>A gather of news nerds, first Tuesday of each month</p>
 </div>
+<a href="https://bl.ocks.org/mbostock/c66ab1426f4b8945a7ef">Animation based on this bl.ock</a>
 </section>
 <script>
 
@@ -41,33 +42,44 @@ h1 {
 !function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define("d3-timer",["exports"],e):e(t.d3_timer={})}(this,function(t){"use strict";function e(t,e,n){this.id=++c,this.restart(t,e,n)}function n(t,n,i){return new e(t,n,i)}function i(t){t=null==t?Date.now():+t,++l;try{for(var e,n=a;n;)t>=n.time&&(e=n.callback)(t-n.time,t),n=n.next}finally{--l}}function o(){l=f=0;try{i()}finally{for(var t,e=a,n=1/0;e;)e.callback?(n>e.time&&(n=e.time),e=(t=e).next):e=t?t.next=e.next:a=e.next;u=t,r(n)}}function r(t){if(!l){f&&(f=clearTimeout(f));var e=t-Date.now();e>24?1/0>t&&(f=setTimeout(o,e)):(l=1,s(o))}}var a,u,l=0,f=0,c=0,m={},s="undefined"!=typeof window&&(window.requestAnimationFrame||window.msRequestAnimationFrame||window.mozRequestAnimationFrame||window.webkitRequestAnimationFrame||window.oRequestAnimationFrame)||function(t){return setTimeout(t,17)};e.prototype=n.prototype={restart:function(t,e,n){if("function"!=typeof t)throw new TypeError("callback is not a function");n=(null==n?Date.now():+n)+(null==e?0:+e);var i=this.id,o=m[i];o?(o.callback=t,o.time=n):(o={next:null,callback:t,time:n},u?u.next=o:a=o,m[i]=u=o),r()},stop:function(){var t=this.id,e=m[t];e&&(e.callback=null,e.time=1/0,delete m[t],r())}};var d="0.0.6";t.version=d,t.timer=n,t.timerFlush=i});
 
 var canvasFront = document.getElementById("canvas-front");
+var section = document.getElementById("section");
 
-var width = canvasFront.offsetWidth,
-    height = canvasFront.offsetHeight,
-    ringRadius = Math.min(width, height) / 24,
-    ringSeparation = 1.5 * ringRadius,
-    n = (width + ringRadius) / ringSeparation,
-    m = (height + ringRadius) / ringSeparation;
-
-var contextBack,
-    contextFront,
+var contextFront,
     scale = window.devicePixelRatio;
 
-console.log(width, height)
+var width,
+    height,
+    ringRadius,
+    ringSeparation,
+    n, m;
 
-if (scale > 1) {
-  canvasFront.style.width = width + "px";
-  canvasFront.style.height = height + "px";
-  canvasFront.width = width * scale;
-  canvasFront.height = height * scale;
-  contextFront = canvasFront.getContext("2d");
-  contextFront.scale(scale, scale);
-} else {
-  contextFront = canvasFront.getContext("2d");
+function resize() {
+  width = section.offsetWidth
+  height = section.offsetHeight
+  ringRadius = width / 24
+  // ringSeparation = 1.5 * ringRadius
+  ringSeparation = 65
+  n = (width + ringRadius) / ringSeparation
+  m = (height + ringRadius) / ringSeparation
+
+  if (scale > 1) {
+    canvasFront.style.width = width + "px";
+    canvasFront.style.height = height + "px";
+    canvasFront.width = width * scale;
+    canvasFront.height = height * scale;
+    contextFront = canvasFront.getContext("2d");
+    contextFront.scale(scale, scale);
+  } else {
+    contextFront = canvasFront.getContext("2d");
+  }
+
+  // contextFront.font = width / 10 + 'px serif';
+  contextFront.font = '100px serif';
+  contextFront.fillStyle = '#ccc';
 }
 
-contextFront.font = '12vmin serif';
-contextFront.fillStyle = '#ccc';
+resize()
+window.addEventListener("resize", resize, false);
 
 d3_timer.timer(function(elapsed) {
   contextFront.clearRect(0, 0, width, height);
@@ -76,7 +88,7 @@ d3_timer.timer(function(elapsed) {
       contextFront.save();
       contextFront.beginPath();
       contextFront.translate(i * ringSeparation, j * ringSeparation);
-      contextFront.rotate((i + j) / 10 + elapsed / 1400);
+      contextFront.rotate((i + j) / 8 + elapsed / 1400);
       contextFront.fillText(',', 0, 0)
       contextFront.restore();
     }
