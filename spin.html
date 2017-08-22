@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
   margin: 0;
@@ -88,7 +89,7 @@ d3_timer.timer(function(elapsed) {
       contextFront.save();
       contextFront.beginPath();
       contextFront.translate(i * ringSeparation, j * ringSeparation);
-      contextFront.rotate((i + j) / 8 + elapsed / 1400);
+      contextFront.rotate((i + j) / (width / 100) + elapsed / 1400);
       contextFront.fillText(',', 0, 0)
       contextFront.restore();
     }
